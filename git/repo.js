@@ -82,7 +82,7 @@ module.exports = {
     status.start();
 
     try {
-      console.log("Git repo directory: " + process.cwd());
+      //console.log("Git repo directory: " + process.cwd());
       await git.init();
       await git.add(".gitignore");
       await git.add("./*");

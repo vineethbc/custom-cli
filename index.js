@@ -3,9 +3,11 @@
 const chalk = require("chalk");
 const clear = require("clear");
 const figlet = require("figlet");
-const files = require("./lib/files");
-const github = require("./lib/github");
-const repo = require("./lib/repo");
+const files = require("./git/files");
+const github = require("./git/github");
+const repo = require("./git/repo");
+const menu = require("./menu/menu");
+const work = require("./work/work");
 
 clear();
 
@@ -31,7 +33,27 @@ const getGithubToken = async () => {
   return token;
 };
 
-const run = async () => {
+const runMenu = async () => {
+  try {
+    const answers = await menu.askMenuOptions();
+    switch (answers.menu) {
+      case menu.menuOptions.git:
+        runGit();
+        break;
+      case menu.menuOptions.work:
+        work.starWork();
+        break;
+      case menu.menuOptions.exit:
+      default:
+        process.exit();
+    }
+    runMenu();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const runGit = async () => {
   try {
     // Retrieve & Set Authentication Token
     const token = await getGithubToken();
@@ -71,4 +93,4 @@ const run = async () => {
   }
 };
 
-run();
+runMenu();
